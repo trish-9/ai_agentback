@@ -9,3 +9,4 @@ google-genai==2.10.0
 google-pasta==0.2.0
 googlesearch-python==1.3.0
 flask-cors==6.0.5
+emails==1.1.2
