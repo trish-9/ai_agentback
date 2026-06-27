@@ -62,7 +62,7 @@ def signup():
                      html="<p>Thank Your Being New User</p>",
                      mail_from=("Signup","trishamgupta43@gmail.com" ),
         )
-         message5.send(
+         response = message5.send(
                      to=u1["email"],
                      smtp={
                          "host": "smtp.gmail.com",
@@ -72,6 +72,7 @@ def signup():
                          "password": "fkpa acxf kqdp eaoz",
                      },
          )
+         print(response)
          return jsonify({"sucess":True,"message":"Signup Sucess"})
       else:
          return jsonify({"success":False,"message":"Failed Login"})
