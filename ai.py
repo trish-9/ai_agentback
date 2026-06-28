@@ -15,7 +15,7 @@ s.execute("create table if not exists login (email varchar(30) , psd varchar(30)
 sq.commit()
 #msg = "Kya aap doctor se appointment lena chahte hain ya abhi baat karna chahte hain? ha "
 app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
-
+client = genai.Client(api_key = "AQ.Ab8RN6KsN9Elh4agxuErRtSISpybIH458V0Pn-nrdtsFSjEFaA")
 app.config["SESSION_COOKIE_SAMESITE"] = "None"   
 app.config["SESSION_COOKIE_SECURE"] = True       
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -128,7 +128,7 @@ def chat():
           User:
           {s['message']}
           """ 
-          client = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
+          
           interaction = client.interactions.create(
           model="gemini-2.5-flash",
           input=prompt)
@@ -147,8 +147,8 @@ def chat():
           
           else:
              if result["intent"] == "TRIAGE":
-                 client2 = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
-                 interaction2 = client2.interactions.create(
+                 
+                 interaction2 = client.interactions.create(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} GIve answer orignal and explainable as per language")
               
@@ -252,8 +252,8 @@ def chat():
                      return jsonify({"success":True,"message":"Please Choose Other These Are Occupied we Have timings [10:00 AM , 10:30Am,11:00 Am , 11:30 AM ,12:00 PM ,1:00PM,1:30PM , 2:00 PM ,3:00PM]"})
              
              if result["intent"] == "Medical Medicine Info":
-                 client1 = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
-                 interaction1 = client1.interactions.create(
+                 
+                 interaction1 = client.interactions.create(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} You are medical medince assistant give orignal answeer only not fake and give brief")
                  return jsonify({"success":True,"message":interaction1.output_text})
