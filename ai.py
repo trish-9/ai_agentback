@@ -6,6 +6,8 @@ from flask_cors import CORS
 import json
 import pandas as pd 
 import emails as em
+import smtplib
+from email.message import EmailMessage
 d = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
 sq = db.connect(**d)
 s = sq.cursor()
@@ -57,27 +59,17 @@ def signup():
       if p3.empty:
          s4.execute(f"insert into login (email , psd) values ('{u1["email"]}','{u1["password"]}');")
          sq4.commit()
-         message5 = em.html(
-                     subject="SignUp Sucessfull",
-                     html="<p>Thank Your Being New User</p>",
-                     mail_from=("Signup","trishamgupta43@gmail.com" ),
-        )
-         res = message5.send(
-                     to=u1["email"],
-                     smtp={
-                         "host": "smtp.gmail.com",
-                         "port": 587,
-                         "tls": True,
-                         "user": "trishamgupta43@gmail.com",
-                         "password": "fkpa acxf kqdp eaoz",
-                     },
-         )
-         print(res)
-         print(u1["email"])
-         print("Response:", res)
-         print("Status Code:", getattr(res, "status_code", None))
-         print("Status Text:", getattr(res, "status_text", None))
-         print("Error:", getattr(res, "error", None))
+         
+         msg = EmailMessage()
+         msg.set_content("Hello! This is a test email sent from Python.")
+         msg['Subject'] = "Python Test Email"
+         msg['From'] = "trishamgupta43@gmail.com"
+         msg['To'] = u1["email"]
+         with smtplib.SMTP('smtp.gmail.com', 587) as server:
+              server.starttls()  # Upgrade to a secure connection
+              server.login("trishamgupta43@gmail.com", "fkpa acxf kqdp eaoz")
+              server.send_message(msg)
+         print("Email sent successfully!")
 
          return jsonify({"sucess":True,"message":"Signup Sucess"})
       else:
