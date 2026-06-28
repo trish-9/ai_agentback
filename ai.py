@@ -30,7 +30,7 @@ def login():
      if request.method == "POST":
          u = request.get_json()
          email = u.get("email")
-         email = email
+         
          
          d5 = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
          sq5 = db.connect(**d5)
@@ -40,7 +40,7 @@ def login():
         
          if p4.empty != True:
             session["name"] = email
-            
+            print(email)
             return jsonify({"success":True, "message": "Login successful"})
             
             
@@ -89,7 +89,7 @@ def chat():
     if request.method == "POST":
        
        s = request.get_json()
-       
+       print(session.get('name'))
        if session.get('name') != None:
           prompt = f"""
           You are the Master Intent & Entity Extraction Agent.
