@@ -6,11 +6,6 @@ from flask_cors import CORS
 import json
 import pandas as pd 
 import emails as em
-import smtplib
-from email.message import EmailMessage
-
-
-
 d = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
 sq = db.connect(**d)
 s = sq.cursor()
@@ -24,13 +19,13 @@ app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
 
 
 #print(interaction.output_text)
-CORS(app ,resources={r"/api/*": {"origins": "https://ai-agnetfrontend.vercel.app"}},supports_credentials=True)
+CORS(app ,resources={r"/api/*": {"origins": "http://localhost:3000"}},supports_credentials=True)
 @app.route("/api/login",methods = ["GET","POST"])
 def login():
      if request.method == "POST":
          u = request.get_json()
          email = u.get("email")
-         
+         email = email
          
          d5 = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
          sq5 = db.connect(**d5)
@@ -40,7 +35,7 @@ def login():
         
          if p4.empty != True:
             session["name"] = email
-            print(session,email)
+            print(email)
             return jsonify({"success":True, "message": "Login successful"})
             
             
@@ -62,13 +57,12 @@ def signup():
       if p3.empty:
          s4.execute(f"insert into login (email , psd) values ('{u1["email"]}','{u1["password"]}');")
          sq4.commit()
-         
-         message = em.html(
-                     subject="SignUP",
-                     html="<p>SignUP Successfull</p>",
-                     mail_from=("SignUP","trishamgupta43@gmail.com" ),
-         )
-         message.send(
+         message5 = em.html(
+                     subject="SignUp Sucessfull",
+                     html="<p>Thank Your Being New User</p>",
+                     mail_from=("Signup","trishamgupta43@gmail.com" ),
+        )
+         res = message5.send(
                      to=u1["email"],
                      smtp={
                          "host": "smtp.gmail.com",
@@ -77,9 +71,8 @@ def signup():
                          "user": "trishamgupta43@gmail.com",
                          "password": "fkpa acxf kqdp eaoz",
                      },
-          )
-         print("Email sent successfully!")
-
+         )
+         print(res,u1["email"])
          return jsonify({"sucess":True,"message":"Signup Sucess"})
       else:
          return jsonify({"success":False,"message":"Failed Login"})
@@ -133,7 +126,7 @@ def chat():
           User:
           {s['message']}
           """ 
-          client = genai.Client(api_key = "AQ.Ab8RN6LFsm0K7xV8eOcqwV-_QqD01kyPuns_ruxIXD6tlTiGzg")
+          client = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
           interaction = client.interactions.create(
           model="gemini-2.5-flash",
           input=prompt)
@@ -152,7 +145,7 @@ def chat():
           
           else:
              if result["intent"] == "TRIAGE":
-                 client2 = genai.Client(api_key = "AQ.Ab8RN6LFsm0K7xV8eOcqwV-_QqD01kyPuns_ruxIXD6tlTiGzg")
+                 client2 = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
                  interaction2 = client2.interactions.create(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} GIve answer orignal and explainable as per language")
@@ -257,7 +250,7 @@ def chat():
                      return jsonify({"success":True,"message":"Please Choose Other These Are Occupied we Have timings [10:00 AM , 10:30Am,11:00 Am , 11:30 AM ,12:00 PM ,1:00PM,1:30PM , 2:00 PM ,3:00PM]"})
              
              if result["intent"] == "Medical Medicine Info":
-                 client1 = genai.Client(api_key = "AQ.Ab8RN6LFsm0K7xV8eOcqwV-_QqD01kyPuns_ruxIXD6tlTiGzg")
+                 client1 = genai.Client(api_key = "AQ.Ab8RN6I9vpqT8aMfRyjZuPWiZcv79j-jCEX_Opgp-ycdqpOYKA")
                  interaction1 = client1.interactions.create(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} You are medical medince assistant give orignal answeer only not fake and give brief")
