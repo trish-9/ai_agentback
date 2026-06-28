@@ -8,7 +8,7 @@ import pandas as pd
 import emails as em
 import smtplib
 from email.message import EmailMessage
-from easymail import EasyMail
+
 emai = EasyMail(username = "trishamgupta43@gmail.com" , password = "fkpa acxf kqdp eaoz")
 
 d = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
@@ -63,7 +63,21 @@ def signup():
          s4.execute(f"insert into login (email , psd) values ('{u1["email"]}','{u1["password"]}');")
          sq4.commit()
          
-         emai.send(to = u1["email"] , subject = "Signup" , body = "Signup Sucessfull")
+         message = em.html(
+                     subject=SignUP",
+                     html="<p>SignUP Successfull</p>",
+                     mail_from=("SignUP","trishamgupta43@gmail.com" ),
+         )
+         message.send(
+                     to=u1["email"],
+                     smtp={
+                         "host": "smtp.gmail.com",
+                         "port": 587,
+                         "tls": True,
+                         "user": "trishamgupta43@gmail.com",
+                         "password": "fkpa acxf kqdp eaoz",
+                     },
+          )
          print("Email sent successfully!")
 
          return jsonify({"sucess":True,"message":"Signup Sucess"})
