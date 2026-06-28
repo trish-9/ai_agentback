@@ -9,7 +9,7 @@ import emails as em
 import smtplib
 from email.message import EmailMessage
 
-emai = EasyMail(username = "trishamgupta43@gmail.com" , password = "fkpa acxf kqdp eaoz")
+
 
 d = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
 sq = db.connect(**d)
