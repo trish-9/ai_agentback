@@ -258,7 +258,7 @@ def chat():
        else:
            return jsonify({
            "success": False,
-           "message": "Unauthorized access. Please login again."
+           "message": f"Unauthorized access. Please login again. {session.get('name')}"
            }), 401 
               
 if __name__ == "__main__":
