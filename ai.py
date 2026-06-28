@@ -64,7 +64,7 @@ def signup():
          sq4.commit()
          
          message = em.html(
-                     subject=SignUP",
+                     subject="SignUP",
                      html="<p>SignUP Successfull</p>",
                      mail_from=("SignUP","trishamgupta43@gmail.com" ),
          )
