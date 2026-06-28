@@ -16,10 +16,12 @@ sq.commit()
 #msg = "Kya aap doctor se appointment lena chahte hain ya abhi baat karna chahte hain? ha "
 app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
 
-
+app.config["SESSION_COOKIE_SAMESITE"] = "None"   # Cross-origin allow karo
+app.config["SESSION_COOKIE_SECURE"] = True         # HTTPS required
+app.config["SESSION_COOKIE_HTTPONLY"] = True
 
 #print(interaction.output_text)
-CORS(app ,resources={r"/api/*": {"origins": "https://ai-agnetfrontend.vercel.app"}},supports_credentials=True)
+CORS(app ,resources={r"/api/*": {"origins": "https://ai-agnetfrontend.vercel.app"}},supports_credentials=True,allow_headers=["Content-Type"],methods=["GET", "POST", "OPTIONS"])
 @app.route("/api/login",methods = ["GET","POST"])
 def login():
      if request.method == "POST":
