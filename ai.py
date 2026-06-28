@@ -19,7 +19,7 @@ app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
 
 
 #print(interaction.output_text)
-CORS(app ,resources={r"/api/*": {"origins": "http://localhost:3000"}},supports_credentials=True)
+CORS(app ,resources={r"/api/*": {"origins": "https://ai-agnetfrontend.vercel.app"}},supports_credentials=True)
 @app.route("/api/login",methods = ["GET","POST"])
 def login():
      if request.method == "POST":
