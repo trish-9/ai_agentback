@@ -15,13 +15,13 @@ s.execute("create table if not exists login (email varchar(30) , psd varchar(30)
 sq.commit()
 #msg = "Kya aap doctor se appointment lena chahte hain ya abhi baat karna chahte hain? ha "
 app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
-client = genai.Client(api_key = "AIzaSyBHpB9YRTEvbtr2dPFkCtoUXzQPX5A3CyY")
+client = genai.Client(api_key = "AQ.Ab8RN6KMruBxW-IURsSMrpH7-jzJL63Gan2LWoKJ9dpyPjUYVg")
 app.config["SESSION_COOKIE_SAMESITE"] = "None"   
 app.config["SESSION_COOKIE_SECURE"] = True       
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 
 #print(interaction.output_text)
-CORS(app ,resources={r"/api/*": {"origins": "https://ai-agnetfrontend.vercel.app"}},supports_credentials=True,allow_headers=["Content-Type", "Authorization"],methods=["GET", "POST", "OPTIONS"])
+CORS(app ,resources={r"/api/*": {"origins": ["https://ai-agnetfrontend.vercel.app","http://localhost:3000"]}},supports_credentials=True,allow_headers=["Content-Type", "Authorization"],methods=["GET", "POST", "OPTIONS"])
 @app.route("/api/login",methods = ["GET","POST"])
 def login():
      if request.method == "POST":
@@ -158,28 +158,28 @@ def chat():
                  d1 = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
                  sq1 = db.connect(**d1)
                  s1 = sq1.cursor()
-                 p = pd.read_sql(f"select id from book where date = '{result["date"]}' and slot = '{result["time"]}' and de = '{result["department"]}'",d1)
+                 p = pd.read_sql(f"select id from book where date = '{result["date"]}' and slot = '{result["time"]}' and de = '{result["department"]}'",sq1)
                  if p.empty:
-                     
-                     s1.execute(f"insert into book (age,de,slot,date,name,sex,sy) values ('{result["age"]}','{result["department"]}','{result["time"]}','{result["date"]}','{result["patient_name"]}','{result["sex"]}',{result["symptoms"]}) RETURNING id ;")
+                     symptoms = ",".join(result["symptoms"])
+                     s1.execute(f"insert into book (age,de,slot,date,name,sex,sy) values ('{result["age"]}','{result["department"]}','{result["time"]}','{result["date"]}','{result["patient_name"]}','{result["sex"]}','{symptoms}') RETURNING id ;")
                      book_id = s1.fetchone()[0]
 
                      sq1.commit()
-                     message = em.html(
-                     subject="Booked Appointment",
-                     html=f"<p>Your Booking ID is {book_id} Please remember and date , time , doctor is {result["date"]} , {result["time"]} ,{result["department"]} </p>",
-                     mail_from=("Booked Appointment","trishamgupta43@gmail.com" ),
-                     )
-                     message.send(
-                     to=session.get('name'),
-                     smtp={
-                         "host": "smtp.gmail.com",
-                         "port": 587,
-                         "tls": True,
-                         "user": "trishamgupta43@gmail.com",
-                         "password": "fkpa acxf kqdp eaoz",
-                     },
-                     )
+                     #message = em.html(
+                     #subject="Booked Appointment",
+                    # html=f"<p>Your Booking ID is {book_id} Please remember and date , time , doctor is {result["date"]} , {result["time"]} ,{result["department"]} </p>",
+                     #mail_from=("Booked Appointment","trishamgupta43@gmail.com" ),
+                     #)
+                     #message.send(
+                     #to=session.get('name'),
+                     #smtp={
+                         #"host": "smtp.gmail.com",
+                         ##"port": 587,
+                         #"tls": True,
+                         #"user": "trishamgupta43@gmail.com",
+                         #"password": "fkpa acxf kqdp eaoz",
+                     #},
+                     #)
 
                      return jsonify({'success':True , "message":f"Your Appointment With Booked Suceesfully . Please remember Your Booking ID!! Booking ID - {book_id} "})
                  else:
@@ -191,16 +191,16 @@ def chat():
                      html=f"<p>Message Has been Sent to hospital and Ambulance is reaching your location as soon as possible </p>",
                      mail_from=("Emergency","trishamgupta43@gmail.com" ),
                      )
-                 message1.send(
-                     to=session.get('name'),
-                     smtp={
-                         "host": "smtp.gmail.com",
-                         "port": 587,
-                         "tls": True,
-                         "user": "trishamgupta43@gmail.com",
-                         "password": "fkpa acxf kqdp eaoz",
-                     },
-                     )
+                 #message1.send(
+                     #to=session.get('name'),
+                     #smtp={
+                      #   "host": "smtp.gmail.com",
+                       #  "port": 587,
+                        # "tls": True,
+                         #"user": "trishamgupta43@gmail.com",
+                         #"#password": "fkpa acxf kqdp eaoz",
+                     #},
+                     #)
                  return jsonify({'success':True , "message":"MSG SENT TO HOSPITAL"})
              if result["intent"] == "CANCEL_APPOINTMENT":
                  d2 = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
@@ -230,23 +230,24 @@ def chat():
                  s3 = sq31.cursor()
                  p1 = pd.read_sql(f"select id from book where date = '{result["date"]}' and slot = '{result["time"]}' and de = '{result["department"]}'",d3)
                  if p1.empty:
+                     symptoms = ",".join(result["symptoms"])
                      s3.execute(f"update book set date = '{result['date']}' , time = '{result["slot"]}' where id = {result['id']} ;")
                      sq31.commit()
-                     message3 = em.html(
-                     subject="Resechudle Appointment",
-                     html=f"<p>Your Booking ID is {p1["id"].iloc[0]} Please remember and date , time , doctor is {result["date"]} , {result["time"]} ,{result["department"]} has been reshecudled </p>",
-                     mail_from=("Reshecdule Appointment","trishamgupta43@gmail.com" ),
-                     )
-                     message3.send(
-                     to=session.get('name'),
-                     smtp={
-                         "host": "smtp.gmail.com",
-                         "port": 587,
-                         "tls": True,
-                         "user": "trishamgupta43@gmail.com",
-                         "password": "fkpa acxf kqdp eaoz",
-                     },
-                     )
+                     #message3 = em.html(
+                     #subject="Resechudle Appointment",
+                     #html=f"<p>Your Booking ID is {p1["id"].iloc[0]} Please remember and date , time , doctor is {result["date"]} , {result["time"]} ,{result["department"]} has been reshecudled </p>",
+                     #mail_from=("Reshecdule Appointment","trishamgupta43@gmail.com" ),
+                     #)
+                     #message3.send(
+                     #to=session.get('name'),
+                     #smtp={
+                     #   "host": "smtp.gmail.com",
+                      #   "port": 587,
+                       #  "tls": True,
+                       #  "user": "trishamgupta43@gmail.com",
+                       #  "password": "fkpa acxf kqdp eaoz",
+                     #},
+                     #)
                      return jsonify({"success":True,"message":"Your Appointment is Suceessfully Reshedule"})
                  else:
                      return jsonify({"success":True,"message":"Please Choose Other These Are Occupied we Have timings [10:00 AM , 10:30Am,11:00 Am , 11:30 AM ,12:00 PM ,1:00PM,1:30PM , 2:00 PM ,3:00PM]"})
