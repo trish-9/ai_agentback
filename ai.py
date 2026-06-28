@@ -40,7 +40,7 @@ def login():
         
          if p4.empty != True:
             session["name"] = email
-            print(email)
+            print(session,email)
             return jsonify({"success":True, "message": "Login successful"})
             
             
