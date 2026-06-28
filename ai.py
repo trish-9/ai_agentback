@@ -85,7 +85,7 @@ def chat():
        
        s = request.get_json()
        print(session.get('name'))
-       if s['name'] != None:
+       if s['email'] != None:
           prompt = f"""
           You are the Master Intent & Entity Extraction Agent.
 
