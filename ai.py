@@ -131,7 +131,7 @@ def chat():
          
           interaction = client.models.generate_content(
           model="gemini-2.5-flash",
-          input=prompt)
+          contents=prompt)
        
        
           text = interaction.text
@@ -150,7 +150,7 @@ def chat():
                  
                  interaction2 = client.models.generate_content(
                  model="gemini-2.5-flash",
-                 input= f"{s['message']} GIve answer orignal and explainable as per language")
+                 contents = f"{s['message']} GIve answer orignal and explainable as per language")
               
                   
                  return jsonify({'success':True,"message":interaction2.text})
@@ -255,7 +255,7 @@ def chat():
                  
                  interaction1 = client.models.generate_content(
                  model="gemini-2.5-flash",
-                 input= f"{s['message']} You are medical medince assistant give orignal answeer only not fake and give brief")
+                 contents= f"{s['message']} You are medical medince assistant give orignal answeer only not fake and give brief")
                  return jsonify({"success":True,"message":interaction1.text})
        else:
            return jsonify({
