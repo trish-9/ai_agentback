@@ -15,7 +15,7 @@ s.execute("create table if not exists login (email varchar(30) , psd varchar(30)
 sq.commit()
 #msg = "Kya aap doctor se appointment lena chahte hain ya abhi baat karna chahte hain? ha "
 app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
-client = genai.Client(api_key = "AQ.Ab8RN6LNC_HnO_6bedS05x-cjKyU9rYbxCMpibt0Rsp7rWeOrQ")
+client = genai.Client(api_key = "AQ.Ab8RN6KsN9Elh4agxuErRtSISpybIH458V0Pn-nrdtsFSjEFaA")
 app.config["SESSION_COOKIE_SAMESITE"] = "None"   
 app.config["SESSION_COOKIE_SECURE"] = True       
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -128,13 +128,13 @@ def chat():
           User:
           {s['message']}
           """ 
-          
-          interaction = client.interactions.create(
+         
+          interaction = client.models.generate_content(
           model="gemini-2.5-flash",
           input=prompt)
        
        
-          text = interaction.output_text
+          text = interaction.text
 
           text = text.replace("```json", "")
           text = text.replace("```", "")
@@ -148,12 +148,12 @@ def chat():
           else:
              if result["intent"] == "TRIAGE":
                  
-                 interaction2 = client.interactions.create(
+                 interaction2 = client.models.generate_content(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} GIve answer orignal and explainable as per language")
               
                   
-                 return jsonify({'success':True,"message":interaction2.output_text})
+                 return jsonify({'success':True,"message":interaction2.text})
              if result["intent"] == "BOOK_APPOINTMENT":
                  d1 = {'host':'dpg-d8t9bi77f7vs73c0d8v0-a.oregon-postgres.render.com','password':'zG3dWR2oIyMKEHzSOE3sGwkqE3SgBfnj' , 'port': 5432, 'user': 'food_v1nx_user', 'database':'food_v1nx'}
                  sq1 = db.connect(**d1)
@@ -253,10 +253,10 @@ def chat():
              
              if result["intent"] == "Medical Medicine Info":
                  
-                 interaction1 = client.interactions.create(
+                 interaction1 = client.models.generate_content(
                  model="gemini-2.5-flash",
                  input= f"{s['message']} You are medical medince assistant give orignal answeer only not fake and give brief")
-                 return jsonify({"success":True,"message":interaction1.output_text})
+                 return jsonify({"success":True,"message":interaction1.text})
        else:
            return jsonify({
            "success": False,
