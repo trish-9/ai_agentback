@@ -15,7 +15,7 @@ s.execute("create table if not exists login (email varchar(30) , psd varchar(30)
 sq.commit()
 #msg = "Kya aap doctor se appointment lena chahte hain ya abhi baat karna chahte hain? ha "
 app.secret_key = "ejjebjbjhhrbjhrbhjrbjhrbvhr"
-client = genai.Client(api_key = "AQ.Ab8RN6KsN9Elh4agxuErRtSISpybIH458V0Pn-nrdtsFSjEFaA")
+client = genai.Client(api_key = "AQ.Ab8RN6LNC_HnO_6bedS05x-cjKyU9rYbxCMpibt0Rsp7rWeOrQ")
 app.config["SESSION_COOKIE_SAMESITE"] = "None"   
 app.config["SESSION_COOKIE_SECURE"] = True       
 app.config["SESSION_COOKIE_HTTPONLY"] = True
